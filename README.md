@@ -32,7 +32,7 @@ Você pode interagir com o projeto de duas formas: acessando-o diretamente pelo 
 
 ### 🌐 Acesso Online (Recomendado)
 O projeto está hospedado no GitHub Pages para acesso rápido e fácil, sem necessidade de downloads.
-👉 **[Acessar o EcoCasa Online](https://SEU-USUARIO.github.io/ecocasa)** *(Lembre-se de substituir este link pelo seu link real do GitHub Pages)*
+👉 **[Acessar o EcoCasa Online](https://gustavojamau.github.io/EcoCasa/)** *(Lembre-se de substituir este link pelo seu link real do GitHub Pages)*
 
 ### 💻 Execução Local (Download)
 O projeto foi construído em formato *Single-Page* (página única) para máxima leveza. Não há necessidade de instalar *frameworks* ou dependências.
