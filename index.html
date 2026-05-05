@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCasa: Sustentabilidade e Cultura Maker</title>
+    <style>
+        /* Variáveis Padrão (Modo Claro) */
+        :root {
+            --primaria: #2e7d32;
+            --secundaria: #4caf50;
+            --fundo: #f1f8e9;
+            --texto: #333333;
+            --card-bg: #ffffff;
+            --code-bg: #f5f5f5;
+            --nav-bg: #1b5e20;
+            --detalhes-bg: #ffffff;
+        }
+
+        /* Variáveis (Modo Escuro) */
+        [data-theme="dark"] {
+            --primaria: #81c784;
+            --secundaria: #4caf50;
+            --fundo: #121212;
+            --texto: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --code-bg: #2d2d2d;
+            --nav-bg: #000000;
+            --detalhes-bg: #1e1e1e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--fundo);
+            color: var(--texto);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primaria);
+            color: #ffffff;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #theme-toggle:hover {
+            background: #ffffff;
+            color: var(--primaria);
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            background-color: var(--nav-bg);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: var(--secundaria);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            color: var(--primaria);
+            border-bottom: 2px solid var(--secundaria);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            flex: 1 1 300px;
+            max-width: 400px;
+            border-top: 4px solid var(--secundaria);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h3 {
+            color: var(--primaria);
+            margin-bottom: 1rem;
+        }
+        
+        .card p {
+            flex-grow: 1; 
+        }
+
+        ul.dicas-lista { list-style-type: none; }
+        ul.dicas-lista li { margin-bottom: 0.8rem; padding-left: 20px; position: relative; }
+        ul.dicas-lista li::before { content: "💡"; position: absolute; left: 0; font-size: 0.9em; }
+
+        details {
+            background-color: var(--detalhes-bg);
+            border: 1px solid var(--secundaria);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        summary {
+            padding: 1rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primaria);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+        summary::before {
+            content: "▶";
+            display: inline-block;
+            margin-right: 0.8rem;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::before { transform: rotate(90deg); }
+
+        .conteudo-toggle {
+            padding: 0 1rem 1rem 1rem;
+            border-top: 1px dashed var(--secundaria);
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border-left: 3px solid var(--primaria);
+        }
+
+        .botoes-acao {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        .btn-youtube {
+            background-color: #ff0000;
+            color: #ffffff;
+        }
+
+        .btn-tinkercad {
+            background-color: #0097a7;
+            color: #ffffff;
+        }
+
+        /* Nova classe para ajustar as imagens perfeitamente nos cards */
+        .img-ilustrativa {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        footer {
+            background-color: var(--primaria);
+            color: #ffffff;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button id="theme-toggle">🌙 Modo Escuro</button>
+        <h1>EcoCasa 🌍</h1>
+        <p>Sustentabilidade, Economia e Cultura Maker na sua rotina.</p>
+    </header>
+
+    <nav>
+        <a href="#os3rs">A Regra dos 3 Rs</a>
+        <a href="#economia">Dicas de Economia</a>
+        <a href="#sucata">Projetos com Sucata</a>
+        <a href="#maker">Arduino & Eletrônica</a>
+    </nav>
+
+    <main>
+        <section id="os3rs">
+            <h2>O Poder dos 3 Rs</h2>
+            <p style="margin-bottom: 1.5rem; text-align: center;">A base da conservação ambiental em casa. Veja como começar:</p>
+            
+            <div class="flex-container">
+                <div class="card">
+                    <h3>1. Reduzir 📉</h3>
+                    <p>O foco é evitar a geração do lixo. Opte por comprar a granel, prefira produtos com refil e recuse sacolas plásticas se você puder carregar o item na mão ou em uma mochila.</p>
+                </div>
+                <div class="card">
+                    <h3>2. Reutilizar ♻️</h3>
+                    <p>Dê uma nova vida ao que iria para o lixo. Potes de sorvete viram organizadores de gaveta, roupas antigas se tornam panos de chão e embalagens de vidro podem guardar temperos.</p>
+                </div>
+                <div class="card">
+                    <h3>3. Reciclar 🗑️</h3>
+                    <p>A etapa final. Lave rapidamente as embalagens para não atrair insetos e separe o lixo seco (papel, plástico, vidro e metal) do lixo úmido (orgânico e banheiro).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="economia">
+            <h2>Dicas Práticas de Economia 💧⚡</h2>
+            <div class="flex-container">
+                <div class="card">
+                    <h3>Economizando Água</h3>
+                    <ul class="dicas-lista">
+                        <li><strong>Água da Máquina:</strong> Colete a água do enxágue da máquina de lavar roupas para lavar o quintal.</li>
+                        <li><strong>Revisão de Vazamentos:</strong> Uma torneira pingando desperdiça mais de 40 litros por dia.</li>
+                        <li><strong>No Banho:</strong> Feche o chuveiro enquanto se ensaboa.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Economizando Energia</h3>
+                    <ul class="dicas-lista">
+                        <li><strong>Vilões do Stand-by:</strong> Tire da tomada micro-ondas e TVs quando não estiverem em uso.</li>
+                        <li><strong>Luz Natural:</strong> Abra janelas e cortinas. Evite acender lâmpadas durante o dia.</li>
+                        <li><strong>Ferro de Passar:</strong> Junte o máximo de roupas possível para passar tudo de uma vez.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="sucata">
+            <h2>Maker Raiz: Projetos com Recicláveis ✂️</h2>
+            <div class="flex-container">
+                <div class="card">
+                    <h3>🌱 Vaso Auto-irrigável de PET</h3>
+                    <img src="Vaso_Auto-Irrigável_de_PET.png" alt="Vaso Auto-irrigável de PET" class="img-ilustrativa">
+                    <p>Corte uma garrafa PET ao meio. A parte do bico fica de cabeça para baixo dentro da base com água. Passe um barbante pelo gargalo: ele puxará a água para a terra por capilaridade.</p>
+                    <div class="botoes-acao">
+                        <a href="https://www.youtube.com/results?search_query=vaso+autoirrigavel+pet+tutorial" target="_blank" class="btn btn-youtube">▶ Ver no YouTube</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🎨 Descanso de Panela com Rolhas</h3>
+                    <img src="Descanso_de_Panela_com_Rolhas.png" alt="Descanso de Panela com Rolhas" class="img-ilustrativa">
+                    <p>Agrupe rolhas de vinho e cole as laterais formando um círculo. A cortiça é um excelente isolante térmico e protegerá a sua mesa das panelas quentes.</p>
+                    <div class="botoes-acao">
+                        <a href="https://www.youtube.com/results?search_query=descanso+de+panela+com+rolhas+passo+a+passo" target="_blank" class="btn btn-youtube">▶ Ver no YouTube</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="maker">
+            <h2>Cultura Maker: Arduino & Sensores 🔌</h2>
+            <p style="margin-bottom: 1rem;">Quer elevar o nível? Você pode usar a tecnologia livre para criar automações incríveis e ajudar a natureza de forma super divertida.</p>
+
+            <details>
+                <summary>🗑️ Projeto 1: Lixeira Automática</summary>
+                <div class="conteudo-toggle">
+                    <img src="Lixeira_Automática_com_Sensor_Ultrassônico.png" alt="Lixeira Automática com Sensor Ultrassônico" class="img-ilustrativa">
+                    <p><strong>Objetivo:</strong> O "olho" da lixeira percebe quando sua mão chega perto e abre a tampa sozinha, facilitando o descarte higiênico.</p>
+                    <div class="botoes-acao">
+                        <a href="https://www.tinkercad.com/things/f3QFMgmxPkm-lixeira-automatica-com-sensor-ultrassonico?sharecode=7h4vNWpTpQ-ylk5gUlsYN8wGOqBqxJc-vkcnz4rDumI" target="_blank" class="btn btn-tinkercad">💻 Ver simulação no Tinkercad</a>
+                    </div>
+<pre><code>// C++ code
+//
+#include &lt;Servo.h&gt;
+
+long readUltrasonicDistance(int triggerPin, int echoPin)
+{
+  pinMode(triggerPin, OUTPUT);  // Clear the trigger
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigger pin to HIGH state for 10 microseconds
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  pinMode(echoPin, INPUT);
+  // Reads the echo pin, and returns the sound wave travel time in microseconds
+  return pulseIn(echoPin, HIGH);
+}
+
+Servo servo_5;
+
+void setup()
+{
+  servo_5.attach(5, 500, 2500);
+}
+
+void loop()
+{
+  if (0.01723 * readUltrasonicDistance(2, 3) < 20) {
+    servo_5.write(90);
+    delay(1000); // Wait for 1000 millisecond(s)
+  } else {
+    servo_5.write(0);
+  }
+}</code></pre>
+                </div>
+            </details>
+
+            <details>
+                <summary>🌡️ Projeto 2: Termômetro Inteligente</summary>
+                <div class="conteudo-toggle">
+                    <img src="Termômetro de LED Inteligente.png" alt="Termômetro de LED Inteligente" class="img-ilustrativa">
+                    <p><strong>Objetivo:</strong> Monitorar as mudanças de temperatura. Perfeito para falar sobre ondas de calor! Ele acende diferentes luzes de alerta dependendo de quão quente está o ambiente.</p>
+                    <div class="botoes-acao">
+                        <a href="https://www.tinkercad.com/things/ijaCSdxD1p4-termometro-de-led-inteligente?sharecode=E0RM96jyzzymdvJToqSpB57QXkiUZZxa7Wv8jEnOL24" target="_blank" class="btn btn-tinkercad">💻 Ver simulação no Tinkercad</a>
+                    </div>
+<pre><code>// C++ code
+//
+int seconds = 0;
+
+void setup()
+{
+  pinMode(A0, INPUT);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+}
+
+void loop()
+{
+  if ((-40 + 0.488155 * (analogRead(A0) - 20)) >= 20) {
+    digitalWrite(2, HIGH);
+  } else {
+    digitalWrite(2, LOW);
+  }
+  if ((-40 + 0.488155 * (analogRead(A0) - 20)) >= 25) {
+    digitalWrite(3, HIGH);
+  } else {
+    digitalWrite(3, LOW);
+  }
+  if ((-40 + 0.488155 * (analogRead(A0) - 20)) >= 30) {
+    digitalWrite(4, HIGH);
+  } else {
+    digitalWrite(4, LOW);
+  }
+  delay(10); // Delay a little bit to improve simulation performance
+}</code></pre>
+                </div>
+            </details>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>Projeto de Extensão Universitária - ODS 13 (Ação Climática) 🌿</p>
+        <p><small>Desenvolvido com tecnologia e propósito por Gustavo da Silva Barbosa.</small></p>
+    </footer>
+
+    <script>
+        const toggleButton = document.getElementById('theme-toggle');
+        
+        if(localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            toggleButton.textContent = '☀️ Modo Claro';
+        }
+
+        toggleButton.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            let targetTheme = 'light';
+
+            if (currentTheme === 'dark') {
+                targetTheme = 'light';
+                toggleButton.textContent = '🌙 Modo Escuro';
+            } else {
+                targetTheme = 'dark';
+                toggleButton.textContent = '☀️ Modo Claro';
+            }
+
+            document.documentElement.setAttribute('data-theme', targetTheme);
+            localStorage.setItem('theme', targetTheme);
+        });
+    </script>
+</body>
+</html>
